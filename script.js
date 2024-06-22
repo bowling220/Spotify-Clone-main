@@ -62,7 +62,7 @@ let songs = [
     songName: "Luh Calm Fit, EH!DE",
     filePath: "songs/11.mp3",
     coverPath: "covers/10.jpg"
-}
+    },
 ];
 
 // Function to play the next song
