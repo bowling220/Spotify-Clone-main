@@ -9,31 +9,60 @@ let songItems = Array.from(document.getElementsByClassName('songItem'));
 
 let songs = [
     {
-        songName: "Song Title 1",
+        songName: "On & On - Cartoon, Daniel Levi",
         filePath: "songs/1.mp3",
         coverPath: "covers/1.jpg"
     },
     {
-        songName: "Song Title 2",
+        songName: "Invincible - DEAF KEV",
         filePath: "songs/2.mp3",
         coverPath: "covers/2.jpg"
     },
     {
-        songName: "Song Title 3",
+        songName: "Mortals - Warriyo, Laura Brehm",
         filePath: "songs/3.mp3",
         coverPath: "covers/3.jpg"
     },
     {
-        songName: "Song Title 4",
+        songName: "Shine - Spektrem",
         filePath: "songs/4.mp3",
         coverPath: "covers/4.jpg"
     },
     {
-        songName: "Song Title 5",
+        songName: "Why We Lose - Cartoon, Coleman Trapp",
         filePath: "songs/5.mp3",
         coverPath: "covers/5.jpg"
     },
-
+    {
+        songName: "Sky High - Elektronomia",
+        filePath: "songs/6.mp3",
+        coverPath: "covers/6.jpg"
+    },
+    {
+        songName: "Symbolism - Electro-Light",
+        filePath: "songs/7.mp3",
+        coverPath: "covers/7.jpg"
+    },
+    {
+        songName: "Heroes Tonight - Janji, Johnning",
+        filePath: "songs/8.mp3",
+        coverPath: "covers/8.jpg"
+    },
+    {
+        songName: "Feel Good - Syn Cole",
+        filePath: "songs/9.mp3",
+        coverPath: "covers/9.jpg"
+    },
+    {
+        songName: "My Heart - Different Heaven, EH!DE",
+        filePath: "songs/10.mp3",
+        coverPath: "covers/10.jpg"
+    },
+    {
+    songName: "Luh Calm Fit, EH!DE",
+    filePath: "songs/11.mp3",
+    coverPath: "covers/10.jpg"
+}
 ];
 
 // Function to play the next song
@@ -73,7 +102,16 @@ masterPlay.addEventListener('click', () => {
 // Listen to the 'ended' event for playing the next song
 audioElement.addEventListener('ended', playNextSong);
 
-// ... (your existing event listeners)
+// Update progress bar as the song plays
+audioElement.addEventListener('timeupdate', () => {
+    let progress = parseInt((audioElement.currentTime / audioElement.duration) * 100);
+    myProgressBar.value = progress;
+});
+
+// Seek to different parts of the song
+myProgressBar.addEventListener('change', () => {
+    audioElement.currentTime = (myProgressBar.value * audioElement.duration) / 100;
+});
 
 // Function to initialize song items
 const initializeSongItems = () => {
