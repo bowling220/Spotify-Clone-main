@@ -1,76 +1,37 @@
-<div class="layout">
-	<div class="content">
-		<h1><strong>C</strong>ascading <strong>S</strong>olar <strong>S</strong>ystem</h1>
-		<p>I was <a href="https://xkcd.com/356/">nerd sniped</a> by a <a href="https://www.reddit.com/r/css/comments/1dimy4t/how_can_i_attach_the_labels_to_the_orbitsthey/">question on Reddit</a>. Read more on <a href="https://noahliebman.net/2024/06/cascading-solar-system/">my blog</a>.</p>
-	</div>
-
-	<ol class="solar-system">
-		<li class="orbit">
-        	<div class="label">Sun</div>
-			<div class="planet sun"></div>
-		</li>
-		<li class="orbit">
-			<div class="label">Mercury</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet mercury"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Venus</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet venus"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Earth</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet earth"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Mars</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet mars"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Jupiter</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet jupiter"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Saturn</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet saturn"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Uranus</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet uranus"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Neptune</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet neptune"></div>
-			</div>
-		</li>
-		<li class="orbit">
-			<div class="label">Pluto</div>
-			<div class="orbit-ring"></div>
-			<div class="axis">
-				<div class="planet pluto"></div>
-			</div>
-		</li>
-	</ol>
-</div>
+<script type="x-shader/x-fragment">#version 300 es
+  /*********
+  * made by Matthias Hurrle (@atzedent)
+  */   
+  precision highp float;
+  out vec4 O;
+  uniform float time;
+  uniform vec2 resolution;
+  #define FC gl_FragCoord.xy
+  #define R resolution
+  #define T time
+  #define hue(a) (.6+.6*cos(6.3*(a)+vec3(0,83,21)))
+  float rnd(float a) {
+    vec2 p=fract(a*vec2(12.9898,78.233));	p+=dot(p,p*345.);
+    return fract(p.x*p.y);
+  }
+  vec3 pattern(vec2 uv) {
+    vec3 col=vec3(0);
+    for (float i=.0; i++<20.;) {
+      float a=rnd(i);
+      vec2 n=vec2(a,fract(a*34.56)), p=sin(n*(T+7.)+T*.5);
+      float d=dot(uv-p,uv-p);
+      col+=.00125/d*hue(dot(uv,uv)+i*.125+T);
+    }
+    return col;
+  }
+  void main(void) {
+    vec2 uv=(FC-.5*R)/min(R.x,R.y);
+    vec3 col=vec3(0);
+    float s=2.4,
+    a=atan(uv.x,uv.y),
+    b=length(uv);
+    uv=vec2(a*5./6.28318,.05/tan(b)+T);
+    uv=fract(uv)-.5;
+    col+=pattern(uv*s);
+    O=vec4(col,1);
+  }</script>
